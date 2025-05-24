@@ -1,4 +1,4 @@
-# SmartNotes - F# New Project
+# Naplóm- F# New Project
 
 **New Project**
 SmartNotes is an intelligent note-taking and search application designed specifically for students. Built with F# and leveraging the WebSharper SPA framework, this system allows users to create, organize, and search notes efficiently using advanced text analysis techniques. With features like rich text editing, subject-based organization, and spaced repetition reminders, SmartNotes combines knowledge management and learning support into one streamlined platform.
