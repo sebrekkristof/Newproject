@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <title>Naplóm</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="Scripts/NewProject.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Don't show the not-yet-loaded templates */
+        [ws-template], [ws-children-template] { display: none; }
+    </style>
+    <script type="text/javascript" src="Scripts/NewProject.head.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-book-open"></i>
+                <h2>Naplóm</h2>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li class="active" ws-onclick="SwitchToHome">
+                        <i class="fas fa-home"></i>
+                        <span>Kezdőlap</span>
+                    </li>
+                    <li>
+                        <a href="#create">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Új bejegyzés</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#tags">
+                            <i class="fas fa-tags"></i>
+                            <span>Címkék Kezelése</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content-area">
+            <div class="content-wrapper">
+                <div ws-hole="Content"></div>
+            </div>
+        </main>
+    </div>
+
+    <div ws-children-template="HomePage">
+        <div class="page-header">
+            <div class="title-container">
+                <h1>Bejegyzéseim</h1>
+                <p>Minden gondolatod egy helyen</p>
+            </div>
+            <button class="btn create-btn" ws-onclick="CreateNewNote">
+                <i class="fas fa-plus"></i>
+                <span>Bejegyzés létrehozása</span>
+            </button>
+        </div>
+        
+        <div class="search-container">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Bejegyzés keresése..." ws-var="SearchTerm" ws-onkeyup="SearchNotes" />
+            </div>
+            <div class="filter-options">                
+                <select ws-onchange="FilterNotes" ws-var="CurrentFilter">
+                    <option value="All Notes">Összes Bejegyzés</option>
+                    <option value="Recent">Legutóbbi</option>
+                    <option value="Favorites">Kedvencek</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="notes-container" ws-hole="NotesContainer">
+            <div class="note-card" ws-template="NoteItem">                
+                <div class="note-header">                    
+                    <span class="note-date">${NoteDate}</span>
+                    <button ws-onclick="ToggleFavorite" class="favorite-btn">
+                        <i class="${FavoriteIcon}"></i>
+                    </button>
+                </div>
+                <h3 class="note-title">${NoteTitle}</h3>
+                <div class="note-preview">${NoteContent}</div>
+                <div class="note-tags" ws-hole="NoteTags"></div>
+                <div class="note-actions">
+                    <button class="btn edit-btn" ws-onclick="OpenNote">
+                        <i class="fas fa-folder-open"></i>
+                        <span>Megnyitás</span>
+                    </button>
+                    <button class="btn delete-btn" ws-onclick="DeleteNote">
+                        <i class="fas fa-trash"></i>
+                        <span>Törlés</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div ws-children-template="CreatePage">
+        <div class="page-header">
+            <div class="title-container">
+                <h1>Új bejegyzés létrehozása</h1>
+                <p> Gondolatok, ötletek vagy fontos információk hozzáadása</p>
+            </div>
+        </div>
+        <div class="form-container">
+            <div class="form-group">
+                <label for="note-title">Cím</label>
+                <input type="text" id="note-title" placeholder="Add meg a bejegyzés címét...">
+            </div>
+            <div class="form-group">
+                <label for="note-content">Tartalom</label>
+                <div class="rich-text-editor">
+                    <div class="editor-toolbar">
+                        <button type="button" class="toolbar-btn" data-command="bold" title="Félkövér">
+                            <i class="fas fa-bold"></i>
+                        </button>
+                        <button type="button" class="toolbar-btn" data-command="italic" title="Dőlt">
+                            <i class="fas fa-italic"></i>
+                        </button>
+                        <button type="button" class="toolbar-btn" data-command="underline" title="Aláhúzott">
+                            <i class="fas fa-underline"></i>
+                        </button>
+                        <span class="toolbar-divider"></span>
+                        <button type="button" class="toolbar-btn" data-command="insertUnorderedList" title="Felsorolás">
+                            <i class="fas fa-list-ul"></i>
+                        </button>
+                        <button type="button" class="toolbar-btn" data-command="insertOrderedList" title="Számozott lista">
+                            <i class="fas fa-list-ol"></i>
+                        </button>
+                        <span class="toolbar-divider"></span>
+                        <button type="button" class="toolbar-btn" data-command="justifyLeft" title="Balra igazítás">
+                            <i class="fas fa-align-left"></i>
+                        </button>
+                        <button type="button" class="toolbar-btn" data-command="justifyCenter" title="Középre igazítás">
+                            <i class="fas fa-align-center"></i>
+                        </button>
+                        <button type="button" class="toolbar-btn" data-command="justifyRight" title="Jobbra igazítás">
+                            <i class="fas fa-align-right"></i>
+                        </button>
+                    </div>
+                    <div id="note-content" class="editor-content" contenteditable="true"></div>
+                    <input type="hidden" id="note-content-html">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Címkék</label>
+                <div class="tag-selection">
+                    <div class="selectable-tags" ws-hole="SelectableTags">
+                        <!-- Tags will be rendered here -->
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn secondary-btn" ws-onclick="SwitchToHome">
+                    <i class="fas fa-times"></i>
+                    <span>Mégse</span>
+                </button>
+                <button class="btn save-btn" ws-onclick="SaveNote" id="save-note-btn">
+                    <i class="fas fa-save"></i>
+                    <span>Bejegyzés Mentése</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div ws-template="TagsPage">
+        <div class="page-header">
+            <div class="title-container">
+                <h1>Címkék Kezelése</h1>
+                <p>Címkék létrehozása és rendszerezése a bejegyzéseidhez</p>
+            </div>
+        </div>
+        <div class="form-container">
+            <div class="form-group">
+                <label for="tag-name">Címke neve</label>
+                <input type="text" id="tag-name" ws-var="TagName" placeholder="Add meg a címke nevét...">
+            </div>
+            <div class="form-group">
+                <label>Címke színe</label>
+                <div class="color-options" ws-hole="ColorOptions">
+                </div>
+                <input type="hidden" ws-var="TagColor">
+            </div>
+            <div class="form-actions">
+                <button class="btn save-btn" ws-onclick="CreateTag">
+                    <i class="fas fa-plus"></i>
+                    <span>Címke Létrehozása</span>
+                </button>
+            </div>
+            
+            <div class="tags-section">
+                <h3>Te Címkéid</h3>
+                <div class="tags-list" ws-hole="TagsList">
+                </div>
+            </div>
+        </div>
+    <script type="module" src="Scripts/NewProject.min.js"></script>
+</body>
+</html>
