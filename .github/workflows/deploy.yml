@@ -32,10 +32,17 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Reinstall Node.js dependencies
+      - name: Install Node.js dependencies
         run: |
-          rm -rf node_modules # Remove existing node_modules
-          npm ci # Reinstall dependencies for the current platform
+          if [ -f "package.json" ]; then
+            if [ -f "package-lock.json" ]; then
+              npm ci
+            else
+              npm install
+            fi
+          else
+            echo "No package.json found, skipping npm install"
+          fi
 
       - name: Build project
         run: dotnet publish -c Release -o out
