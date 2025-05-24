@@ -34,7 +34,7 @@ The project demonstrates how functional programming principles can be applied to
 1. Clone the repository:
    ```powershell
    git clone 
-   cd FSHARP-project-omega
+   cd FSHARP-NewProject
    ```
 
 2. Restore dependencies:
